@@ -1,0 +1,37 @@
+extends layout
+block content
+  .container-fluid
+    .row-fluid
+      .span2.main-menu-span
+      .span9
+        .row-fluid.sortable.ui-sortable
+          .box.span12
+            .box-header.well(data-original-title)
+              h2
+                i.icon-edit
+                | Create new race
+            .box-content
+              .form-horizontal
+                fieldset
+                  legend Enter Race Details here
+                  .control-group
+                    label.control-label Race Name
+                    .controls
+                      input.span6#raceName
+                      p.help-block Enter race name here
+                  .control-group
+                    label.control-label Race Date
+                    .controls
+                      input.span4.input-xlarge.datepicker.hasDatepickerspan6#raceDate(type="text")
+                      p.help-block Enter race date
+                fieldset
+                  legend Enter Wave Details here
+                  button.btn.btn-primary.addWaveButton Add Wave
+                  hr
+                  #waves
+                  button.btn.btn-primary.addWaveButton Add Wave
+                .form-actions
+                  button.btn.btn-success(onclick="SubmitForm()") Save All
+                  |  
+                  button.btn.btn-warning() Clear All
+  script(src='/js/custom/createRaceScripts.js') 

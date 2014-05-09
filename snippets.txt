@@ -1,0 +1,6 @@
+curl --data "EPCs=AAAA-&Source=Paulo&Times=1364537707103-&Antennas=1-" localhost:8080/marathon/receivedetectionsunix_multiple.php
+
+$.post("http://localhost:8080/marathon/receivedetectionsunix_multiple.php", { EPCs : "86000511-", Source: "Paulo", Antennas:"1-", Times: ((Date.now()/1000) + 28800) +"-"})
+
+
+path.resolve is the way

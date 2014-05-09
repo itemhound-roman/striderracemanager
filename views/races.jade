@@ -1,0 +1,47 @@
+extends layout
+block content
+  .span9
+    .row-fluid.sortable.ui-sortable
+      .box.span12
+        .box-header.well(data-original-title)
+          h2
+            i.icon-edit
+            | Races in Database
+        .box-content
+          table.table.table-striped.table-bordered.bootstrap-datatable.datatable
+            thead
+              tr(role = "row")
+                th Race Name
+                th Race Date
+                th Actions
+            tbody
+              -var i = false;
+              -each race in races
+                -i = !i;
+                -if(i)
+                  tr.odd
+                    td=race.raceName
+                    td=race.raceDate.toLocaleDateString()
+                    td 
+                      a.btn.btn-primary(href="/race/"+race.raceId) Manage
+                      |  
+                      button.btn.btn-warning(onclick = "DeleteRace(" + race.raceId + ", \'"+race.raceName+"\')") Delete Race
+                -else
+                  tr.even
+                    td=race.raceName
+                    td=race.raceDate.toLocaleDateString()
+                    td 
+                      a.btn.btn-primary(href="/race/"+race.raceId) Manage
+                      |  
+                      button.btn.btn-warning(onclick = "DeleteRace(" + race.raceId + ", \'"+race.raceName+"\')") Delete Race
+  #deleteRaceModal.modal.hide.fade(style="display:none")
+    .modal-header
+      button.button.close(data-dismiss="modal")|x
+      h3 Confirm Delete
+    .modal-body
+      h3#raceToBeDeleted Delete Race?
+      p This will delete the race and all associated runners
+    .modal-footer
+      button.btn.btn-warning(onclick = "ConfirmDeleteRace()") Delete Race
+      a.btn(data-dismiss="modal") Close
+  script(src='/js/custom/racesScripts.js') 

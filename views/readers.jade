@@ -1,0 +1,39 @@
+extends layout
+block content
+
+  .span9
+    .row-fluid.sortable.ui-sortable
+      .box.span12
+        .box-header.well(data-original-title)
+          h2
+            i.icon-tasks
+            |  Sync Reader Time
+        .box-content
+          .form-search
+            |  Reader Address  
+            input.input-medium.search-query#readerToSync(type="text")
+            |   
+            button.btn.btn-primary#syncReaderTimeButton Sync
+    .row-fluid.sortable.ui-sortable
+      .box.span12
+        .box-header.well(data-original-title)
+          h2
+            i.icon-tasks
+            |  Real time reader information
+        .box-content
+          table.table.table-striped.table-bordered.bootstrap-datatable
+            thead
+              tr(role="row")
+                th Reader Name
+                th Antenna 1
+                th Antenna 2
+                th Antenna 3
+                th Antenna 4
+                th Last Seen Time
+            tbody#tableBody
+              tr
+
+  link(rel='stylesheet', href='/css/custom.css')
+  script(src='/socket.io/socket.io.js') 
+  script(src = '/js/underscore.js')
+  script(src='/js/custom/readerScripts.js') 

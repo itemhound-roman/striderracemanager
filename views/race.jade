@@ -1,0 +1,110 @@
+extends layout
+block content
+  style #messageToSubmit {resize:none}
+  script.
+    var raceId = #{race.raceId};
+  -if ((typeof(errors)) !== 'undefined')
+    script.
+      var errs = errors
+  .span9#content
+    .row-fluid.sortable.ui-sortable
+      .box.span12
+        .box-header.well(data-original-title)
+          h2
+            i.icon-tasks
+            |   #{race.raceName}
+          .box-icon
+            h2=race.raceDate.toLocaleDateString()
+        .box-content
+          .form-horizontal
+            fieldset
+              legend Wave Control
+                |                     
+                button.btn.btn-success#loadRunnersButton(style="margin-left:20px; margin-bottom:3px;")
+                  i.icon-file.icon-white
+                  |    Load Runner File
+          table.table.table-striped.table-bordered.bootstrap-datatable.datatable
+            thead
+              tr(role = "row")
+                th Wave Name
+                th Wave Distance
+                th Start Time
+                th Number of Runners
+                th Starters
+                th Finishers
+                th Runner Controls
+                th Race Control
+            tbody
+              -each wave in race.waves
+                tr
+                  td 
+                    -if (wave.hasStarted)
+                      span.label.label-important.racestatuslabel(wave=wave.waveId) Running
+                    -else
+                      span.label.label-success.racestatuslabel(wave=wave.waveId) Ready
+                    |  #{wave.waveName}  
+                  td=wave.waveDistance
+                  -if(wave.hasStarted)
+                    td.raceStartTime(tag=wave.waveId)=wave.waveStart.toLocaleTimeString() 
+                  -else
+                    td.raceStartTime(tag=wave.waveId) 
+                  td=wave.numRunners
+                  td=wave.numStarters
+                  td=wave.numFinishers
+                  td
+                    button.btn.btn-info(tag=wave.waveId) 
+                      i.icon-star.icon-white
+                      |   View Winners
+                  td
+                    -if  (wave.hasStarted)
+                      button.startWaveButton.btn.btn-primary.disabled(tag=wave.waveId) 
+                        i.icon-time.icon-white
+                        |   Start Race
+                    -else
+                      button.startWaveButton.btn.btn-primary(tag=wave.waveId) 
+                        i.icon-time.icon-white
+                        |   Start Race
+                    |   
+                    -if  (wave.hasFinishFrenzyEnabled)
+                      button.finishFrenzyButton.btn.btn-warning.disabled(tag=wave.waveId) Finish Frenzy
+                    -else
+                      button.finishFrenzyButton.btn.btn-warning(tag=wave.waveId) Finish Frenzy
+    .row-fluid.sortable.ui-sortable
+      .box.span4
+        .box-header.well(data-original-title)
+          h2
+            i.icon-tasks
+            |   Data
+        .box-content
+          form(action="/api/writeRaceData", method="POST")
+            input(type="hidden", name="raceId", value=race.raceId)
+            button.btn.btn-success#downloadRaceDataButton(type="submit") Download Race Data
+      .box.span4
+        .box-header.well(data-original-title)
+          h2
+            i.icon-tasks
+            |   Detections
+        .box-content
+          form(action="/api/writeDetections", method="POST")
+            input(type="hidden", name="raceId", value=race.raceId)
+            //-button.btn.btn-primary#downloadRaceDataButton(type="submit") Download Detections
+            button.btn.btn-primary#downloadDetectionsButton(type="submit") Download Detections
+  #loadRunnersModal.modal.hide.fade(style="display:none")
+    .modal-header
+      button.button.close(data-dismiss="modal")|x
+      h3 Load Runners
+    .modal-body
+      form.form-horizontal(action='/api/uploadRunnerFile/', method='post', enctype='multipart/form-data')
+        fieldset
+          legend Upload Runner File
+          .control-group
+          
+            .controls
+              input(type="hidden", name="raceId", value=race.raceId)
+              input(type="file", name="runnerFile") Load Runner File
+              p Make sure file is tab delimited
+        .form-actions
+          button.btn.btn-primary(type="submit") Submit
+    .modal-footer
+      a.btn(data-dismiss="modal")
+  script(src='/js/custom/raceScripts.js') 
